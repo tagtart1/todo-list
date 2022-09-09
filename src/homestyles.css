@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto';
+}
+
+:root {
+    --main-color: #a5c5ab;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1.25fr 6fr;
+    flex: 1 1 auto;
+}
+
+.left-column {
+    background-color: #e8f4ea;
+}
+
+.todo-lists-content {
+   background-color: #fbfffc; 
+}
+
+.header {
+    width: 100%;
+    background-color: var(--main-color);
+    color: rgb(255, 255, 255);
+    padding: 32px 50px;
+    font-size: 42px;
+    font-weight: bold;
+}
