@@ -8,8 +8,9 @@ module.exports = {
     static: './dist',
   },
   output: {
-    filename: 'main.js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    assetModuleFilename: 'src/assets/images/[name].[ext]'
   },
   
   module: {
@@ -22,6 +23,7 @@ module.exports = {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
       },
+      
     ],
   },
 

@@ -4,20 +4,96 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="main.js" defer></script>
+    
     <title>Document</title>
 </head>
+
 <body>
-    <div class="header">
+    
+    <div class="header preload ">
         Todo List Adam Style
     </div>
-    <div class="main">
+    <div class="main preload">
         <div class="left-column">
+            <ul class="tabs-list">
+                <li class="tab-item main-tab">Home</li>
+                <li class="tab-item main-tab">Today</li>
+                <li class="tab-item main-tab">Week</li>
+                <li class="project-tab-header">Projects</li>
+                <li class="tab-item">test project</li>
+            </ul>
 
         </div>
-        <div class="todo-lists-content">
-            
+        <div class="main-content">
+            <div class="todo-lists-content">
+                <div class="project-header">
+                    <p>Project Name</p>
+                </div>
+
+                
+
+                <div class="todo-container">
+                    <div class="todo">
+                        <p>This is an example todo that will be created dynamically</p>
+                        <div class="todo-actions">
+                             <p>Sept 13th</p>
+                             <img class='icon' src="edit.svg" alt="done"> 
+                             <img src="delete.svg" alt="delete">
+                        </div>
+                     </div>
+                    <div class="todo">
+                       <p>This is an example todo that will be created dynamically</p>
+                       <div class="todo-actions">
+                            <p>Sept 13th</p>
+                            <img src="edit.svg" alt="done"> 
+                            <img src="delete.svg" alt="delete">
+                       </div>
+                    </div>
+                    <div class="create-todo"><span>+</span> Add task</div>
+                </div>
+            </div>
         </div>
+      
     </div>
+    <div class="new-task-form-container invis">
+        <form class="popup preload">
+            <div class="form-header">
+                <div class="form-title">
+                    Create New Task...
+                </div>
+                <button class="backout-btn">X</button> 
+            </div>
+            <div class="left-panel">
+                <h2>Priority: </h2>
+
+                <div>
+                    <input type="radio" id="low-priority" name="priority" value="low" required>
+                    <label class="low-label" for="low-priority">Low</label>
+                </div>
+
+                <div>
+                    <input type="radio" id="medium-priority" name="priority" value="medium">
+                    <label class="medium-label" for="medium-priority">Medium</label>
+                </div>
+
+                <div>
+                    <input type="radio" id="high-priority" name="priority" value="high">
+                    <label class="high-label" for="high-priority">High</label>
+                </div>
+            </div>
+            <div class="form-main">
+                <input type="text" id="task-title" placeholder="Title: Pet Katie" maxlength="40" required>
+                <textarea class="task-details" placeholder="Details: feed the cat, pet the cat."></textarea>
+                <div class="form-footer">
+                    <div class="duedate-container">
+                        <div class="duedate-title">Due Date:</div>
+                        <input type="date" required>
+                    </div>
+                    <button class="submit-task-btn">Add Task</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="bundle.js"></script>
 </body>
 </html>
