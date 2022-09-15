@@ -42,7 +42,10 @@
                         </div>
                      </div>
                     <div class="todo">
-                       <p>This is an example todo that will be created dynamically</p>
+                       <div>
+                           <div class="priority-line"></div>
+                           <p>This is an example todo that will be created dynamically</p>
+                       </div>
                        <div class="todo-actions">
                             <p>Sept 13th</p>
                             <img src="edit.svg" alt="done"> 
@@ -82,12 +85,12 @@
                 </div>
             </div>
             <div class="form-main">
-                <input type="text" id="task-title" placeholder="Title: Pet Katie" maxlength="40" required>
-                <textarea class="task-details" placeholder="Details: feed the cat, pet the cat."></textarea>
+                <input type="text" name="title" id="task-title" placeholder="Title: Pet Katie" maxlength="45" required>
+                <textarea class="task-details" name='details' placeholder="Details: feed the cat, pet the cat."></textarea>
                 <div class="form-footer">
                     <div class="duedate-container">
                         <div class="duedate-title">Due Date:</div>
-                        <input type="date" required>
+                        <input type="date" name="dueDate" required>
                     </div>
                     <button class="submit-task-btn">Add Task</button>
                 </div>

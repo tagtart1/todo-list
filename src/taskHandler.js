@@ -1,11 +1,11 @@
 //creates, updates, reads, deletes tasks
+import {format} from 'date-fns'
 
-
-export const Task = (title, details, priority, dueDate) => {
+export const createTask = (title, details, priority, dueDate) => {
     const getTitle = () => title;
     const getDetails = () => details;
     const getPriority = () => priority;
-    const getDueDate = () => dueDate;
+    const getDueDate = () => format(new Date(dueDate), 'LLLL eo');
 
     
 

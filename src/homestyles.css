@@ -92,7 +92,7 @@ body {
 }
 
 .todo-lists-content {
-    width: 50%;
+    width: 60%;
     padding-top: 24px ;
     display: flex;
     flex-direction: column;
@@ -108,12 +108,27 @@ body {
 
 .todo {
     font-size: 18px;
-    padding: 10px;
+    padding: 12px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    position: relative;
+    background-color: var(--secondary-color);
+    border-radius: 10px;
 }
+
+.priority-line {
+    position: absolute;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    left: 0;
+    height:100%;
+    width: 3px;
+    
+    top: 0;
+}
+
+
 
 
 
@@ -124,7 +139,8 @@ body {
     align-items: center;
     gap: 14px;
     cursor: pointer;
-    background-color: rgb(116, 116, 27);
+    background-color: var(--main-color);
+    border-radius: 10px;
 }
 
 
@@ -145,5 +161,11 @@ body {
     height: 26px;
     width: 26px;
     cursor: pointer;
+}
+
+.todo-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
