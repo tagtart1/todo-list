@@ -14,7 +14,7 @@ export const createProject = (name) => {
         projectTasks.splice(index, 1)
     }
 
-    return {projectTasks, getName};
+    return {projectTasks, getName, removeTask};
 }
 
 let currentProject;

@@ -57,7 +57,7 @@ const UIHandler = () => {
     const submitTask = (e) => {
         //calls to taskhandler to create a task object
         const newTask = TaskHandler.createTask(createTaskForm.elements['title'].value, createTaskForm.elements['details'].value, createTaskForm.elements['priority'].value, 
-        createTaskForm.elements['dueDate'].value);
+        createTaskForm.elements['dueDate'].value, ProjectHandler.getCurrentProject());
 
         // Modify this to make it make sense later \/
         ProjectHandler.getCurrentProject().projectTasks.push(newTask);
@@ -138,6 +138,14 @@ const UIHandler = () => {
         deleteIcon.src = 'delete.svg';
         deleteIcon.alt = 'delete button';
         todoActions.appendChild(deleteIcon);
+
+        //Deletes task completely
+        deleteIcon.addEventListener('click', () => {
+            divTodo.remove();
+          
+            task.getParentProject().removeTask(task.getParentProject().projectTasks.indexOf(task));
+            ProjectHandler.homeProject.removeTask(ProjectHandler.homeProject.projectTasks.indexOf(task));
+        })
 
         createTodoBtn.parentNode.insertBefore(divTodo, createTodoBtn);
     }

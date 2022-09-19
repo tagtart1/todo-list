@@ -1,9 +1,11 @@
 //creates, updates, reads, deletes tasks
 import {format, parseISO } from 'date-fns'
 
-export const createTask = (title, details, priority, dueDate) => {
+export const createTask = (title, details, priority, dueDate, parentProject) => {
     let isChecked = false;
+    
 
+    const getParentProject = () => parentProject
     const getTitle = () => title;
     const getDetails = () => details;
     const getPriority = () => priority;
@@ -23,6 +25,7 @@ export const createTask = (title, details, priority, dueDate) => {
         getExtendedDueDate,
         toggleChecked,
         getChecked,
+        getParentProject
     }
 }
 
