@@ -108,9 +108,9 @@
 }
 
 input[type="radio"] {
-     height: 1px;
-     width: 1px;
-     appearance: none;
+    height: 0px;
+    width: 0px;
+    appearance: none;
     margin: 0;
     padding: 0;
 }

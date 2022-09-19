@@ -75,7 +75,7 @@ body {
 
 .tab-item {
     cursor: pointer;
-    padding: 12px 0px 12px 18px ;
+    padding: 12px 12px 12px 18px ;
     border-radius: 8px;
 }
 
@@ -117,6 +117,34 @@ body {
     border-radius: 10px;
 }
 
+.todo-checkbox {
+    border: 2px solid black;
+    border-radius: 25%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.todo-done-checked {
+    display: inline-block;
+   
+    width: 10px;
+    height: 10px;
+    background-color: rgb(0, 0, 0);
+    border-radius: 25%;
+}
+
+
+
+.todo-left-side {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .priority-line {
     position: absolute;
     border-top-left-radius: 10px;
@@ -145,6 +173,7 @@ body {
 
 
 
+
 .create-todo span {
     font-size: 24px;
     font-weight: bold;
@@ -161,11 +190,68 @@ body {
     height: 26px;
     width: 26px;
     cursor: pointer;
+    transition: .3s;
+}
+
+.todo-actions img:hover {
+    transform: scale(1.1);
 }
 
 .todo-container {
     display: flex;
     flex-direction: column;
     gap: 12px;
+}
+
+
+.todo-title-checked {
+   text-decoration: line-through;
+   color: rgba(0, 0, 0, 0.363);
+   user-select: none;
+}
+ 
+
+#project-title-input {
+    padding-left: 8px;
+    font-size: 16px;
+    height: 2rem;
+    background-color: var(--content-color);
+    border-radius: 8px;
+    border: 1px solid black;
+}
+
+.new-project-button {
+
+}
+
+.display-none {
+    display: none !important;
+}
+
+.new-project-form{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+   
+    padding: 12px 12px 12px 18px ;
+    border-radius: 8px;
+}
+
+.new-project-form button {
+    padding: .5rem 0px;
+    width: 49%;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.add-btn {
+    background-color: rgb(102, 255, 102);
+}
+
+.cancel-btn {
+    background-color: #ff6060;
 }
 

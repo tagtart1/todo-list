@@ -20,44 +20,34 @@
                 <li class="tab-item main-tab">Today</li>
                 <li class="tab-item main-tab">Week</li>
                 <li class="project-tab-header">Projects</li>
-                <li class="tab-item">test project</li>
+                <li class="tab-item new-project-button ">+ Add Project</li>
+                <form class="display-none new-project-form ">
+                    <input type="text" name="project-title" id="project-title-input" required maxlength="35">
+                    <div>
+                        <button class="add-btn">Add</button>
+                        <button class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
             </ul>
 
         </div>
         <div class="main-content">
             <div class="todo-lists-content">
                 <div class="project-header">
-                    <p>Project Name</p>
+                    Home
                 </div>
 
                 
 
                 <div class="todo-container">
-                    <div class="todo">
-                        <p>This is an example todo that will be created dynamically</p>
-                        <div class="todo-actions">
-                             <p>Sept 13th</p>
-                             <img class='icon' src="edit.svg" alt="done"> 
-                             <img src="delete.svg" alt="delete">
-                        </div>
-                     </div>
-                    <div class="todo">
-                       <div>
-                           <div class="priority-line"></div>
-                           <p>This is an example todo that will be created dynamically</p>
-                       </div>
-                       <div class="todo-actions">
-                            <p>Sept 13th</p>
-                            <img src="edit.svg" alt="done"> 
-                            <img src="delete.svg" alt="delete">
-                       </div>
-                    </div>
+                
                     <div class="create-todo"><span>+</span> Add task</div>
                 </div>
             </div>
         </div>
       
     </div>
+
     <div class="new-task-form-container invis">
         <form class="popup preload">
             <div class="form-header">
