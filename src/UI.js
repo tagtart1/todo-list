@@ -15,7 +15,17 @@ const UIHandler = () => {
     const addNewProject = document.querySelector('.new-project-button');
     const newProjectForm = document.querySelector('.new-project-form');
     const projectFormCancelBtn = document.querySelector('.cancel-btn');
-    const projectHeader = document.querySelector('.project-header')
+    const projectHeader = document.querySelector('.project-header');
+    const detailsPopup = document.querySelector('.details-popup');
+    const detailsContainer = document.querySelector('.details-container');
+    const detailsCloseBtn = document.querySelector('.details-close');
+
+    //Details form DOM to output
+    const detailsTitle = document.querySelector('.detail-title');
+    const detailsProject = document.querySelector('.detail-project');
+    const detailsPriority = document.querySelector('.detail-priority');
+    const detailsDate = document.querySelector('.detail-date');
+    const detailsText = document.querySelector('.detail-text');
 
 
     const setupStartProject = () => {
@@ -60,8 +70,15 @@ const UIHandler = () => {
         createTaskForm.elements['dueDate'].value, ProjectHandler.getCurrentProject());
 
         // Modify this to make it make sense later \/
-        ProjectHandler.getCurrentProject().projectTasks.push(newTask);
-        ProjectHandler.homeProject.projectTasks.push(newTask);
+        if(ProjectHandler.getCurrentProject() === ProjectHandler.homeProject) {
+            ProjectHandler.homeProject.projectTasks.push(newTask);
+        }
+        else {
+            ProjectHandler.getCurrentProject().projectTasks.push(newTask);
+            ProjectHandler.homeProject.projectTasks.push(newTask);
+        }
+        
+        
         // /\
         toggleTaskForm(e);
         createTaskForm.reset();
@@ -129,6 +146,20 @@ const UIHandler = () => {
         taskDueDate.textContent = task.getDueDate();
         todoActions.appendChild(taskDueDate);
 
+        const detailsBtn = document.createElement('button');
+        detailsBtn.classList.add('details-btn');
+        detailsBtn.textContent ='DETAILS'
+        todoActions.appendChild(detailsBtn);
+        //Toggles the details popup
+        detailsBtn.addEventListener('click', () => {
+            toggleDetailsPopup();
+            detailsTitle.textContent = task.getTitle();
+            detailsProject.textContent = task.getParentProject().getName();
+            detailsPriority.textContent = task.getPriority();
+            detailsDate.textContent = task.getExtendedDueDate();
+            detailsText.textContent = task.getDetails();
+        } );
+
         const editIcon = new Image();
         editIcon.src = 'edit.svg';
         editIcon.alt = "edit button";
@@ -139,15 +170,20 @@ const UIHandler = () => {
         deleteIcon.alt = 'delete button';
         todoActions.appendChild(deleteIcon);
 
-        //Deletes task completely
+        //Deletes task completely move to projectandler
         deleteIcon.addEventListener('click', () => {
-            divTodo.remove();
-          
+            divTodo.remove();   
             task.getParentProject().removeTask(task.getParentProject().projectTasks.indexOf(task));
             ProjectHandler.homeProject.removeTask(ProjectHandler.homeProject.projectTasks.indexOf(task));
         })
 
         createTodoBtn.parentNode.insertBefore(divTodo, createTodoBtn);
+    }
+
+    const toggleDetailsPopup = () => {
+        blurPage();
+        detailsContainer.classList.toggle('invis');
+        detailsPopup.classList.toggle('visible');
     }
 
     const loadProjectTasks = () => {
@@ -167,6 +203,48 @@ const UIHandler = () => {
         newProjectForm.classList.toggle('display-none');
         addNewProject.classList.toggle('display-none');
     }
+
+    const deleteProject = (projectDOM) => {
+        projectDOM.remove();
+      
+        ProjectHandler.flushHomeProject();
+    
+        //Goto home
+        ProjectHandler.setCurrentProject(ProjectHandler.homeProject);
+        loadProjectTasks();
+
+    }
+
+    const loadDeleteProjectIcon = (projectDOM) => {
+        const newSpan = document.createElement('span');
+        const deleteIcon = new Image();
+        deleteIcon.src = 'delete.svg';
+        deleteIcon.classList.add('delete-project-button');
+        newSpan.appendChild(deleteIcon);
+        projectHeader.appendChild(newSpan);
+
+        const confirmBtn = document.createElement('button');
+        confirmBtn.classList.add('delete-confirm');
+        confirmBtn.classList.add('display-none');
+        confirmBtn.textContent ='CONFIRM';
+
+        projectHeader.appendChild(confirmBtn);
+
+        deleteIcon.addEventListener('click', () => {
+            deleteIcon.classList.toggle('display-none');
+            confirmBtn.classList.toggle('display-none');
+            setTimeout(() => {
+                
+                deleteIcon.classList.remove('display-none');
+                confirmBtn.classList.add('display-none');
+            }, 7000);
+        })
+
+        confirmBtn.addEventListener('click', () => {
+            deleteProject(projectDOM);
+        })
+            
+    }
     
 
     //stops anim from playing on page start
@@ -174,6 +252,7 @@ const UIHandler = () => {
      header.classList.toggle('preload');
      main.classList.toggle('preload');
      createTaskForm.classList.toggle('preload');
+     detailsPopup.classList.toggle('preload');
    });
     
     addNewProject.addEventListener('click', toggleProjectForm);
@@ -181,15 +260,19 @@ const UIHandler = () => {
         e.preventDefault();
         newProjectForm.reset();
         toggleProjectForm();
+        
     })
 
 
 
     newProjectForm.addEventListener('submit', (e) => {
+
+        //Create a new project
         e.preventDefault();
         const newProject = ProjectHandler.createProject(newProjectForm.elements['project-title'].value);
         const newTabItem = document.createElement('li');
         newTabItem.classList.add('tab-item');
+        
         newTabItem.textContent = newProject.getName();
         newProjectForm.reset();
         toggleProjectForm();
@@ -198,12 +281,16 @@ const UIHandler = () => {
         newTabItem.addEventListener('click', () => {
             ProjectHandler.setCurrentProject(newProject);
             loadProjectTasks();
+            loadDeleteProjectIcon(newTabItem);
         })
 
         addNewProject.parentNode.insertBefore(newTabItem, addNewProject); 
     })
 
 
+
+    
+    detailsCloseBtn.addEventListener('click', toggleDetailsPopup)
     newTaskBtn.addEventListener('click', toggleTaskForm);
     closeFormBtn.addEventListener('click', toggleTaskForm);
     createTaskForm.addEventListener('submit', submitTask)

@@ -5,7 +5,7 @@ export const createTask = (title, details, priority, dueDate, parentProject) => 
     let isChecked = false;
     
 
-    const getParentProject = () => parentProject
+    const getParentProject = () => parentProject;
     const getTitle = () => title;
     const getDetails = () => details;
     const getPriority = () => priority;

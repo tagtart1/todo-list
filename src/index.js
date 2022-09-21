@@ -1,5 +1,6 @@
 import './homestyles.css';
 import './newTaskFormStyles.css';
+import './detailsPopup.css';
 
 
 

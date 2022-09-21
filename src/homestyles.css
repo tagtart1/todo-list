@@ -9,8 +9,9 @@
     --main-color: #a5c5ab;
     --content-color: #f5f8f6; 
     --secondary-color: #e8f4ea;
-    
+    --high-priority-color: rgb(245, 54, 28);
 }
+
 
 p {
     margin: 0;
@@ -103,12 +104,20 @@ body {
 .project-header {
     font-weight: bold;
     font-size: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.project-header span img {
     cursor: pointer;
+    height: 24px;
+    width: 24px;
 }
 
 .todo {
     font-size: 18px;
-    padding: 12px 10px;
+    padding: 10px 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -225,6 +234,7 @@ body {
 }
 
 .display-none {
+    
     display: none !important;
 }
 
@@ -254,4 +264,51 @@ body {
 .cancel-btn {
     background-color: #ff6060;
 }
+
+
+
+.delete-confirm {
+    cursor: pointer;
+    transition: all .3s;
+    background-color: var(--content-color);
+    border: 1px solid var(--high-priority-color);
+    border-radius: 8px;
+    color: var(--high-priority-color);
+    padding: 6px 16px;
+}
+
+.delete-confirm:hover {
+    color: var(--content-color);
+    background-color: var(--high-priority-color)
+
+}
+
+.delete-project-button {
+    transition: all .3s;
+}
+
+.delete-project-button:hover{
+    transform: scale(1.1);
+}
+
+.details-btn {
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 12px;
+    border: 1px solid black;
+    color: black;
+    transition: all .2s;
+}
+
+
+
+.details-btn:hover {
+    color: var(--secondary-color);
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color)
+  
+}
+
 

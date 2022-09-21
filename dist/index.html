@@ -22,7 +22,7 @@
                 <li class="project-tab-header">Projects</li>
                 <li class="tab-item new-project-button ">+ Add Project</li>
                 <form class="display-none new-project-form ">
-                    <input type="text" name="project-title" id="project-title-input" required maxlength="35">
+                    <input type="text" name="project-title" id="project-title-input" required maxlength="20">
                     <div>
                         <button class="add-btn">Add</button>
                         <button class="cancel-btn">Cancel</button>
@@ -35,12 +35,13 @@
             <div class="todo-lists-content">
                 <div class="project-header">
                     Home
+                    
                 </div>
 
                 
 
                 <div class="todo-container">
-                
+                    
                     <div class="create-todo"><span>+</span> Add task</div>
                 </div>
             </div>
@@ -85,7 +86,31 @@
                     <button class="submit-task-btn">Add Task</button>
                 </div>
             </div>
+           
         </form>
+    </div>
+
+    <div class="details-container invis">
+       <div class="details-popup preload">
+            <div class="details-header">
+                <span class="detail-title"></span>
+                <span class="details-close">✖</span>
+            </div>
+            <div class="details-body">
+                <div class="detail-item">
+                    <h3>Project: </h3> <span class="detail-project"></span>
+                </div>
+                <div class="detail-item">
+                    <h3>Priority: </h3><span class="detail-priority"></span>
+                </div>
+                <div class="detail-item">
+                    <h3>Due Date:</h3> <span class="detail-date"></span>
+                </div>
+                <div class="detail-item last-item">
+                    <h3>Details:</h3> <span class="detail-text"></span>
+                </div>
+            </div>
+       </div>
     </div>
     <script src="bundle.js"></script>
 </body>
