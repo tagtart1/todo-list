@@ -9,12 +9,19 @@ export const createTask = (title, details, priority, dueDate, parentProject) => 
     const getTitle = () => title;
     const getDetails = () => details;
     const getPriority = () => priority;
+    const getRawDueDate = () => dueDate;
     const getDueDate = () => format(parseISO(dueDate), 'MMMM do');
     const getExtendedDueDate = () => format(parseISO(dueDate), 'MMMM do, yyyy');
     
     const toggleChecked = () => isChecked = !isChecked;
     const getChecked = () => isChecked;
 
+    const updateTask = (newTitle, newDetails, newPriority, newDueDate) => {
+        title = newTitle;
+        details = newDetails;
+        priority = newPriority;
+        dueDate = newDueDate;
+    }
 
 
     return {
@@ -25,7 +32,9 @@ export const createTask = (title, details, priority, dueDate, parentProject) => 
         getExtendedDueDate,
         toggleChecked,
         getChecked,
-        getParentProject
+        getParentProject,
+        getRawDueDate,
+        updateTask
     }
 }
 

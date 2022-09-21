@@ -79,18 +79,38 @@
 .detail-item {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    
     padding-right: 24px;
 }
+
+.detail-big-text {
+    align-items: flex-start;
+    gap: 24px;
+}
+
 
 .detail-item h3 {
     margin: 0;
     padding: 0;
+    width: 8rem;
 }
 
 .detail-item span {
     font-size: 16px;
 }
+
+.detail-item textarea {
+    margin: 0;
+    padding: 0;
+    resize: none;
+    background-color: transparent;
+    width: 100%;
+    border: none;
+    outline: none;
+    height: 100px;
+    font-size: 16px;
+}
+
 
 
 

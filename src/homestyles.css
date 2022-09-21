@@ -78,9 +78,11 @@ body {
     cursor: pointer;
     padding: 12px 12px 12px 18px ;
     border-radius: 8px;
+   
 }
 
 .tab-item:hover{
+    
     background-color: #dae7dc;;
 }
 
@@ -117,7 +119,7 @@ body {
 
 .todo {
     font-size: 18px;
-    padding: 10px 8px;
+    padding: 10px 8px 10px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -311,4 +313,13 @@ body {
   
 }
 
+.tab-selected {
+    font-weight: bold;
+   
+}
+
+.tab-selected::before {
+    font-weight: bold;
+    content: '- ';
+}
 

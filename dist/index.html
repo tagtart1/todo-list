@@ -34,8 +34,9 @@
         <div class="main-content">
             <div class="todo-lists-content">
                 <div class="project-header">
-                    Home
-                    
+                    <span class="project-header-text">Home</span>
+                    <span><img class='delete-project-button display-none' src='delete.svg'></span>
+                    <button class="delete-confirm display-none">CONFIRM</button>
                 </div>
 
                 
@@ -106,8 +107,8 @@
                 <div class="detail-item">
                     <h3>Due Date:</h3> <span class="detail-date"></span>
                 </div>
-                <div class="detail-item last-item">
-                    <h3>Details:</h3> <span class="detail-text"></span>
+                <div class="detail-item detail-big-text">
+                    <h3>Details:</h3> <textarea class="detail-text" readonly></textarea>
                 </div>
             </div>
        </div>

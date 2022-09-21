@@ -3,7 +3,7 @@
 
 export const getCurrentProject = () => currentProject;
 export const setCurrentProject = (project) => currentProject = project;
-export const setHomeProect = (project) => homeProject = project;
+export const setHomeProject = (project) => homeProject = project;
 
 export const flushHomeProject = () => {
     
@@ -12,10 +12,10 @@ export const flushHomeProject = () => {
     });
 }
 
-export const createProject = (name) => {
+export const createProject = (name, attachedDOMTab) => {
     let projectTasks = []; //holds task objects
 
-
+    const getAttachedDOMTab = () => attachedDOMTab;
     const getName = () => name;
 
     const removeTask = (index) => {
@@ -24,7 +24,7 @@ export const createProject = (name) => {
 
     
 
-    return {projectTasks, getName, removeTask};
+    return {projectTasks, getName, removeTask, getAttachedDOMTab};
 }
 
 let currentProject;
