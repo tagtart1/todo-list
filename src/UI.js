@@ -157,15 +157,23 @@ const UIHandler = () => {
         const todoTitle = document.createElement('p');
         todoTitle.textContent = task.getTitle();
         leftSideDiv.appendChild(todoTitle);
-
+        //Ability to mark a task as done
         const todoCheckboxInner = document.createElement('div');
         if (task.getChecked()) {
             todoCheckboxInner.classList.toggle('todo-done-checked');
+            taskDueDate.classList.toggle('todo-date-checked');
             todoTitle.classList.toggle('todo-title-checked');
+            detailsBtn.classList.toggle('todo-details-checked');
+            editIcon.classList.toggle('todo-icons-checked');
+            deleteIcon.classList.toggle('todo-icons-checked');
         }
         todoCheckbox.addEventListener('click', () => {
             todoCheckboxInner.classList.toggle('todo-done-checked');
+            taskDueDate.classList.toggle('todo-date-checked');
             todoTitle.classList.toggle('todo-title-checked');
+            detailsBtn.classList.toggle('todo-details-checked');
+            editIcon.classList.toggle('todo-icons-checked');
+            deleteIcon.classList.toggle('todo-icons-checked');
             task.toggleChecked();
         })
         todoCheckbox.appendChild(todoCheckboxInner);

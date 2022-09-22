@@ -136,7 +136,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-   
+    cursor: pointer;
 }
 
 .todo-done-checked {
@@ -219,6 +219,17 @@ body {
    text-decoration: line-through;
    color: rgba(0, 0, 0, 0.363);
    user-select: none;
+}
+
+
+.todo-date-checked {
+    color: rgba(0, 0, 0, 0.363) 
+}
+
+.todo
+
+.todo-icons-checked {
+    filter: invert(96%) sepia(0%) saturate(33%) hue-rotate(200deg) brightness(82%) contrast(73%);
 }
  
 
@@ -311,6 +322,11 @@ body {
     background-color: var(--main-color);
     border: 1px solid var(--main-color)
   
+}
+
+.todo-details-checked{
+    color: rgba(0, 0, 0, 0.363);
+    border: 1px solid rgba(0, 0, 0, 0.363);
 }
 
 .tab-selected {
