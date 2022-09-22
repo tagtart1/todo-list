@@ -8,8 +8,7 @@ const UIHandler = () => {
 
     let isEditMode = false;
     let taskToEdit;
-    let oldProjectDeleteIcon = null;
-    let oldProjectDeleteConfirm = null;
+    
     const formContainer = document.querySelector('.new-task-form-container');
     const createTaskForm = document.querySelector('.popup');
     const main= document.querySelector('.main');
@@ -100,13 +99,23 @@ const UIHandler = () => {
         //calls to taskhandler to create a task object
         const newTask = TaskHandler.createTask(createTaskForm.elements['title'].value, createTaskForm.elements['details'].value, createTaskForm.elements['priority'].value, 
         createTaskForm.elements['dueDate'].value, ProjectHandler.getCurrentProject());
+        //JSON SAVING TESTING!!!
+        const JSONProjectState = localStorage.getItem(ProjectHandler.getCurrentProject().getName());
+        Object.assign(ProjectHandler.getCurrentProject(), JSON.parse(JSONProjectState));
+        
+        
+        
+       
 
+       
         // Modify this to make it make sense later \/
         if(ProjectHandler.getCurrentProject() === ProjectHandler.homeProject) {
             ProjectHandler.homeProject.projectTasks.push(newTask);
         }
         else {
             ProjectHandler.getCurrentProject().projectTasks.push(newTask);
+            localStorage.setItem(ProjectHandler.getCurrentProject().getName(), JSON.stringify(ProjectHandler.getCurrentProject()));
+            
             ProjectHandler.homeProject.projectTasks.push(newTask);
         }
         
@@ -320,6 +329,9 @@ const UIHandler = () => {
         newTabItem.classList.add('tab-item');
         
         newTabItem.textContent = newProject.getName();
+        //Save to storage
+        localStorage.setItem(newProject.getName(), JSON.stringify(newProject));
+       
         newProjectForm.reset();
         toggleProjectForm();
 

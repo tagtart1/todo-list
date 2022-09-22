@@ -12,7 +12,11 @@ export const flushHomeProject = () => {
     });
 }
 
+
+
 export const createProject = (name, attachedDOMTab) => {
+
+  
     let projectTasks = []; //holds task objects
 
     const getAttachedDOMTab = () => attachedDOMTab;
@@ -22,12 +26,13 @@ export const createProject = (name, attachedDOMTab) => {
         projectTasks.splice(index, 1)
     }
 
-    
 
-    return {projectTasks, getName, removeTask, getAttachedDOMTab};
+    return {projectTasks, getName, removeTask, getAttachedDOMTab, };
 }
 
 let currentProject;
 export let homeProject;
+
+
 
 

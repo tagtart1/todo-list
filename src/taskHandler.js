@@ -34,7 +34,9 @@ export const createTask = (title, details, priority, dueDate, parentProject) => 
         getChecked,
         getParentProject,
         getRawDueDate,
-        updateTask
+        updateTask,
+        isChecked,
+        title
     }
 }
 
