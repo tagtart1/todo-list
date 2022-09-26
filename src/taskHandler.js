@@ -1,42 +1,44 @@
 //creates, updates, reads, deletes tasks
 import {format, parseISO } from 'date-fns'
 
-export const createTask = (title, details, priority, dueDate, parentProject) => {
+export let allTasks = [];
+
+export const addToAllTasks = (task) => {
+    allTasks.push(task);
+}
+
+export const createTask = (title, details, priority, dueDate, parentProjectName) => {
     let isChecked = false;
     
-
-    const getParentProject = () => parentProject;
-    const getTitle = () => title;
-    const getDetails = () => details;
-    const getPriority = () => priority;
-    const getRawDueDate = () => dueDate;
-    const getDueDate = () => format(parseISO(dueDate), 'MMMM do');
-    const getExtendedDueDate = () => format(parseISO(dueDate), 'MMMM do, yyyy');
     
-    const toggleChecked = () => isChecked = !isChecked;
-    const getChecked = () => isChecked;
-
+ 
+    const getFormattedDueDate = () => format(parseISO(obj.dueDate), 'MMMM do');
+    const getExtendedDueDate = () => format(parseISO(obj.dueDate), 'MMMM do, yyyy');
+    
+    const toggleChecked = () => {
+        isChecked = !isChecked;
+    }
     const updateTask = (newTitle, newDetails, newPriority, newDueDate) => {
-        title = newTitle;
-        details = newDetails;
-        priority = newPriority;
-        dueDate = newDueDate;
+        obj.title = newTitle;
+        obj.details = newDetails;
+        obj.priority = newPriority;
+        obj.dueDate = newDueDate;
     }
 
-
-    return {
-        getTitle,
-        getDetails,
-        getPriority,
-        getDueDate,
+    const obj = {
+        title,
+        details,
+        priority,
+        dueDate,
+        parentProjectName,
+        getFormattedDueDate,
         getExtendedDueDate,
         toggleChecked,
-        getChecked,
-        getParentProject,
-        getRawDueDate,
         updateTask,
         isChecked,
-        title
+    
     }
+
+    return obj;
 }
 

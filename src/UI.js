@@ -1,6 +1,7 @@
 //takes input and displays onto DOM
 import * as TaskHandler from './taskHandler.js'
 import * as ProjectHandler from './projectHandler.js'
+import * as StorageHandler from './storageHandler.js';
 
 
 const UIHandler = () => {
@@ -13,7 +14,7 @@ const UIHandler = () => {
     const createTaskForm = document.querySelector('.popup');
     const main= document.querySelector('.main');
     const header = document.querySelector('.header');
-    const mainTab = document.querySelectorAll('.main-tab');
+    const mainTabs = document.querySelectorAll('.main-tab');
     const deleteProjectIcon = document.querySelector('.delete-project-button');
     const deleteProjectConfirm = document.querySelector('.delete-confirm');
 
@@ -39,17 +40,51 @@ const UIHandler = () => {
 
     let homeTab;
 
+    
+
     const setupStartProject = () => {
-        
-        
-        mainTab.forEach((tab) => {
+  
+        let counter = 0;
+        mainTabs.forEach((tab) => {
             
-            const project = ProjectHandler.createProject(tab.textContent, tab);
+            let project;
+            if (localStorage.length < 3) { 
+                project = ProjectHandler.createProject(tab.textContent, tab);
+                ProjectHandler.addProjectToArray(project);
+                console.log('here');
+            }
+            else {
+                console.log('here2');
+                console.log(localStorage);
+                project = ProjectHandler.createProject(StorageHandler.getSavedProject(tab.textContent).name, tab);
+                project.projectTasks = StorageHandler.getSavedProject(tab.textContent).projectTasks;
+                ProjectHandler.addProjectToArray(project);
+                
+                counter++
+               
+                //Rebuild tasks
+                if (project.projectTasks.length > 0) {
+                for(let i = 0; i < project.projectTasks.length; i++) {
+            
+                  
+                    
+                    let setupTask = TaskHandler.createTask(project.projectTasks[i].title, project.projectTasks[i].details, project.projectTasks[i].priority, project.projectTasks[i].dueDate, project.projectTasks[i].parentProjectName);
+                    project.projectTasks[i] = setupTask;
+                    if (project.name == 'Home') {
+                        TaskHandler.addToAllTasks(project.projectTasks[i]);
+                        
+                   }
+                }
+                }
+            }
+
             if (tab.textContent == 'Home')  {
                 homeTab = tab;
                 ProjectHandler.setCurrentProject(project);
                 ProjectHandler.setHomeProject(project);
+                loadProjectTasks();
                 tab.classList.add('tab-selected');
+                
             }
             tab.addEventListener('click', () => {
                 const oldSelected = document.querySelector('.tab-selected');
@@ -64,6 +99,60 @@ const UIHandler = () => {
         })
         
     }
+
+    const loadSavedProjects = () => {
+        for (let i = 0; i < localStorage.length; i++) {
+            if (localStorage.key(i) != 'Home' && localStorage.key(i) != 'Today' && localStorage.key(i) != 'Week') {
+                
+                const newTabItem = createProjectTab(localStorage.key(i));
+                const newProject = ProjectHandler.createProject(localStorage.key(i), newTabItem);
+                newProject.projectTasks = StorageHandler.getSavedProject(localStorage.key(i)).projectTasks;
+               
+                ProjectHandler.addProjectToArray(newProject);
+
+                if (newProject.projectTasks.length > 0) {
+                    for(let i = 0; i < newProject.projectTasks.length; i++) {
+                
+                       
+                        
+                        let setupTask = TaskHandler.createTask(newProject.projectTasks[i].title, newProject.projectTasks[i].details, newProject.projectTasks[i].priority, newProject.projectTasks[i].dueDate, newProject.projectTasks[i].parentProjectName);
+                        newProject.projectTasks[i] = setupTask;
+                       
+                    }
+                }
+
+                newTabItem.addEventListener('click', () => {
+                    const oldSelected = document.querySelector('.tab-selected');
+                    if (oldSelected != null) {
+                        oldSelected.classList.remove('tab-selected');
+                    }
+                    ProjectHandler.setCurrentProject(newProject);
+                  
+                    newTabItem.classList.add('tab-selected');
+                    loadProjectTasks();
+                    resetDeleteIcons();
+                })
+        
+                addNewProject.parentNode.insertBefore(newTabItem, addNewProject);
+
+            }
+        }
+
+      
+    }
+
+    const handleCopyingTasks = () => [
+        ProjectHandler.allProjects.forEach((project) => {
+            if (project.name != 'Home') {
+               project.projectTasks.splice(0, project.projectTasks.length);
+               ProjectHandler.homeProject.projectTasks.forEach((homeTask) => {
+                 if (homeTask.parentProjectName == project.name) {
+                    project.projectTasks.push(homeTask);
+                 }
+               })
+            }
+        })
+    ]
 
     const toggleTaskForm = (e) => {
         isEditMode = false;
@@ -87,7 +176,10 @@ const UIHandler = () => {
     const editTask = (e) => {
         taskToEdit.updateTask(createTaskForm.elements['title'].value, createTaskForm.elements['details'].value, createTaskForm.elements['priority'].value, 
         createTaskForm.elements['dueDate'].value);
-
+        console.log(taskToEdit);
+        console.log(TaskHandler.allTasks);
+        StorageHandler.saveProject(ProjectHandler.getCurrentProject());
+        StorageHandler.saveProject(ProjectHandler.homeProject);
         toggleTaskForm(e);
        
         createTaskForm.reset();
@@ -98,30 +190,25 @@ const UIHandler = () => {
     const submitTask = (e) => {
         //calls to taskhandler to create a task object
         const newTask = TaskHandler.createTask(createTaskForm.elements['title'].value, createTaskForm.elements['details'].value, createTaskForm.elements['priority'].value, 
-        createTaskForm.elements['dueDate'].value, ProjectHandler.getCurrentProject());
-        //JSON SAVING TESTING!!!
-        const JSONProjectState = localStorage.getItem(ProjectHandler.getCurrentProject().getName());
-        Object.assign(ProjectHandler.getCurrentProject(), JSON.parse(JSONProjectState));
-        
-        
-        
+        createTaskForm.elements['dueDate'].value, ProjectHandler.getCurrentProject().name);
        
-
-       
+        console.log(newTask.parentProjectName);
         // Modify this to make it make sense later \/
         if(ProjectHandler.getCurrentProject() === ProjectHandler.homeProject) {
             ProjectHandler.homeProject.projectTasks.push(newTask);
         }
         else {
             ProjectHandler.getCurrentProject().projectTasks.push(newTask);
-            localStorage.setItem(ProjectHandler.getCurrentProject().getName(), JSON.stringify(ProjectHandler.getCurrentProject()));
+           
             
             ProjectHandler.homeProject.projectTasks.push(newTask);
+            StorageHandler.saveProject(ProjectHandler.homeProject);
         }
+        //Update save to storage
         
-        
-        // /\
+        StorageHandler.saveProject(ProjectHandler.getCurrentProject());
         toggleTaskForm(e);
+        
         createTaskForm.reset();
       
         
@@ -133,7 +220,7 @@ const UIHandler = () => {
     const addTaskToDOM = (task) => {
         const createTodoBtn = document.querySelector('.create-todo');
 
-
+        
 
         const divTodo = document.createElement('div');
         divTodo.classList.add('todo');
@@ -145,7 +232,7 @@ const UIHandler = () => {
         const priorityLine = document.createElement('div');
         priorityLine.classList.add('priority-line');
 
-        switch(task.getPriority()) {
+        switch(task.priority) {
             case 'low': priorityLine.style.backgroundColor = 'rgb(54, 173, 70)';
             break;
             case 'medium': priorityLine.style.backgroundColor = 'rgb(218, 203, 0)';
@@ -164,18 +251,11 @@ const UIHandler = () => {
   
         
         const todoTitle = document.createElement('p');
-        todoTitle.textContent = task.getTitle();
+        todoTitle.textContent = task.title;
         leftSideDiv.appendChild(todoTitle);
         //Ability to mark a task as done
         const todoCheckboxInner = document.createElement('div');
-        if (task.getChecked()) {
-            todoCheckboxInner.classList.toggle('todo-done-checked');
-            taskDueDate.classList.toggle('todo-date-checked');
-            todoTitle.classList.toggle('todo-title-checked');
-            detailsBtn.classList.toggle('todo-details-checked');
-            editIcon.classList.toggle('todo-icons-checked');
-            deleteIcon.classList.toggle('todo-icons-checked');
-        }
+       
         todoCheckbox.addEventListener('click', () => {
             todoCheckboxInner.classList.toggle('todo-done-checked');
             taskDueDate.classList.toggle('todo-date-checked');
@@ -183,7 +263,16 @@ const UIHandler = () => {
             detailsBtn.classList.toggle('todo-details-checked');
             editIcon.classList.toggle('todo-icons-checked');
             deleteIcon.classList.toggle('todo-icons-checked');
-            task.toggleChecked();
+           
+            task.isChecked = !task.isChecked;
+            if (ProjectHandler.getCurrentProject() != ProjectHandler.homeProject) {
+                
+                StorageHandler.saveProject(ProjectHandler.getCurrentProject());
+            }
+            else {
+                StorageHandler.saveProject( ProjectHandler.getProjectByString(task.parentProjectName));
+            }
+            StorageHandler.saveProject(ProjectHandler.homeProject);
         })
         todoCheckbox.appendChild(todoCheckboxInner);
 
@@ -192,7 +281,7 @@ const UIHandler = () => {
         divTodo.appendChild(todoActions);
 
         const taskDueDate = document.createElement('p');
-        taskDueDate.textContent = task.getDueDate();
+        taskDueDate.textContent = task.getFormattedDueDate();
         todoActions.appendChild(taskDueDate);
 
         const detailsBtn = document.createElement('button');
@@ -203,11 +292,11 @@ const UIHandler = () => {
         detailsBtn.addEventListener('click', () => {
             toggleDetailsPopup();
            
-            detailsTitle.textContent = task.getTitle();
-            detailsProject.textContent = task.getParentProject().getName();
-            detailsPriority.textContent = task.getPriority();
+            detailsTitle.textContent = task.title;
+            detailsProject.textContent = task.parentProjectName;
+            detailsPriority.textContent = task.priority;
             detailsDate.textContent = task.getExtendedDueDate();
-            detailsText.textContent = task.getDetails();
+            detailsText.textContent = task.details;
         } );
 
         const editIcon = new Image();
@@ -227,10 +316,36 @@ const UIHandler = () => {
 
         //Deletes task completely move to projectandler
         deleteIcon.addEventListener('click', () => {
-            divTodo.remove();   
-            task.getParentProject().removeTask(task.getParentProject().projectTasks.indexOf(task));
-            ProjectHandler.homeProject.removeTask(ProjectHandler.homeProject.projectTasks.indexOf(task));
+            divTodo.remove(); 
+            
+           
+            if (ProjectHandler.getCurrentProject() != ProjectHandler.homeProject) {
+                
+                ProjectHandler.getCurrentProject().removeTask(ProjectHandler.getCurrentProject().projectTasks.indexOf(task));
+                ProjectHandler.homeProject.removeTask(ProjectHandler.homeProject.projectTasks.indexOf(task));
+
+                StorageHandler.saveProject(ProjectHandler.getCurrentProject());
+            }
+            else {
+                ProjectHandler.homeProject.removeTask(ProjectHandler.homeProject.projectTasks.indexOf(task));
+                ProjectHandler.getProjectByString(task.parentProjectName).removeTask(ProjectHandler.getProjectByString(task.parentProjectName).projectTasks.indexOf(task));
+
+                StorageHandler.saveProject( ProjectHandler.getProjectByString(task.parentProjectName));
+            }
+
+            StorageHandler.saveProject(ProjectHandler.homeProject);
+              
         })
+
+        if (task.isChecked) {
+            console.log('should be checking');
+            todoCheckboxInner.classList.add('todo-done-checked');
+            taskDueDate.classList.add('todo-date-checked');
+            todoTitle.classList.add('todo-title-checked');
+            detailsBtn.classList.add('todo-details-checked');
+            editIcon.classList.add('todo-icons-checked');
+            deleteIcon.classList.add('todo-icons-checked');
+        }
 
         createTodoBtn.parentNode.insertBefore(divTodo, createTodoBtn);
     }
@@ -242,10 +357,10 @@ const UIHandler = () => {
         formTitle.textContent = 'Edit Task...';
         submitTaskBtn.textContent = 'EDIT';
         //Puts task details into edit
-        createTaskForm.elements['title'].value = task.getTitle();
-        createTaskForm.elements['details'].value = task.getDetails();
-        createTaskForm.elements['dueDate'].value = task.getRawDueDate();
-        createTaskForm.elements['priority'].value = task.getPriority();
+        createTaskForm.elements['title'].value = task.title;
+        createTaskForm.elements['details'].value = task.details;
+        createTaskForm.elements['dueDate'].value = task.dueDate
+        createTaskForm.elements['priority'].value = task.priority;
     }
 
     const toggleDetailsPopup = () => {
@@ -257,8 +372,7 @@ const UIHandler = () => {
     const loadProjectTasks = () => {
         
         const project = ProjectHandler.getCurrentProject();
-        projectHeaderTxt.textContent = project.getName();
-
+        projectHeaderTxt.textContent = project.name;
         const oldTodos = document.querySelectorAll('.todo');
         
         oldTodos.forEach((todo) => {
@@ -278,15 +392,17 @@ const UIHandler = () => {
         
         hideDeleteIcons();
         projectDOM.remove();
-      
+        ProjectHandler.deleteProjectFromArray(ProjectHandler.getCurrentProject());
+       
         ProjectHandler.flushHomeProject();
-    
+        StorageHandler.saveProject(ProjectHandler.homeProject);
         //Goto home
 
 
         ProjectHandler.setCurrentProject(ProjectHandler.homeProject);
         loadProjectTasks();
-        homeTab.classList.add('tab-selected')
+        homeTab.classList.add('tab-selected');
+        
     }
 
     const resetDeleteIcons = () => {
@@ -298,6 +414,14 @@ const UIHandler = () => {
     const hideDeleteIcons = () => {
         deleteProjectIcon.classList.add('display-none');
         deleteProjectConfirm.classList.add('display-none');
+    }
+
+    const createProjectTab = (tabName) => {
+        const newTabItem = document.createElement('li');
+        newTabItem.classList.add('tab-item');
+        newTabItem.textContent = tabName;
+
+        return newTabItem;
     }
 
   
@@ -323,31 +447,48 @@ const UIHandler = () => {
 
         //Create a new project
         e.preventDefault();
-        
-        const newTabItem = document.createElement('li');
-        const newProject = ProjectHandler.createProject(newProjectForm.elements['project-title'].value, newTabItem);
-        newTabItem.classList.add('tab-item');
-        
-        newTabItem.textContent = newProject.getName();
-        //Save to storage
-        localStorage.setItem(newProject.getName(), JSON.stringify(newProject));
-       
-        newProjectForm.reset();
-        toggleProjectForm();
+        //Duplicate Check
+        let isDuplicateName = false;
 
-        //When clicked, set and load the current projects tasks
-        newTabItem.addEventListener('click', () => {
-            const oldSelected = document.querySelector('.tab-selected');
-            if (oldSelected != null) {
-                oldSelected.classList.remove('tab-selected');
+        ProjectHandler.allProjects.forEach((project) => {
+            if (project.name == newProjectForm.elements['project-title'].value) {
+                isDuplicateName = true;
+                return;
             }
-            ProjectHandler.setCurrentProject(newProject);
-            newTabItem.classList.add('tab-selected');
-            loadProjectTasks();
-            resetDeleteIcons();
         })
+        if(newProjectForm.elements['project-title'].value == 'Home' || newProjectForm.elements['project-title'].value == 'Today' || 
+        newProjectForm.elements['project-title'].value == 'Week') {
+            alert('No duplicate names!');
+            
+        } else if (isDuplicateName) {
+            alert('No duplicate names!');
+        } else {
+            //Make Project
+            const newTabItem = createProjectTab(newProjectForm.elements['project-title'].value);
+            const newProject = ProjectHandler.createProject(newProjectForm.elements['project-title'].value, newTabItem);
+        
+      
+       
+            ProjectHandler.addProjectToArray(newProject);
 
-        addNewProject.parentNode.insertBefore(newTabItem, addNewProject); 
+            newProjectForm.reset();
+            toggleProjectForm();
+
+            //When clicked, set and load the current projects tasks
+            newTabItem.addEventListener('click', () => {
+                const oldSelected = document.querySelector('.tab-selected');
+                if (oldSelected != null) {
+                    oldSelected.classList.remove('tab-selected');
+                }
+                ProjectHandler.setCurrentProject(newProject);
+          
+                newTabItem.classList.add('tab-selected');
+                loadProjectTasks();
+                resetDeleteIcons();
+            })
+
+            addNewProject.parentNode.insertBefore(newTabItem, addNewProject); 
+         }
     })
 
 
@@ -365,7 +506,7 @@ const UIHandler = () => {
     });
 
     deleteProjectConfirm.addEventListener('click', () => {
-        deleteProject(ProjectHandler.getCurrentProject().getAttachedDOMTab());
+        deleteProject(ProjectHandler.getCurrentProject().attachedDOMTab);
     })
 
     detailsCloseBtn.addEventListener('click', toggleDetailsPopup)
@@ -375,13 +516,17 @@ const UIHandler = () => {
     //Form Submission events
     createTaskForm.addEventListener('submit', (e) => {
         if (isEditMode) {
+            
             editTask(e);
         }
         else submitTask(e);
     })
 
     setupStartProject();
-    return { toggleTaskForm };
+    loadSavedProjects();
+    handleCopyingTasks();
+
+    return { toggleTaskForm  };
 }
 
 const UIObject = UIHandler();
