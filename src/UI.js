@@ -264,7 +264,7 @@ const UIHandler = () => {
             editIcon.classList.toggle('todo-icons-checked');
             deleteIcon.classList.toggle('todo-icons-checked');
            
-            task.isChecked = !task.isChecked;
+            task.toggleChecked();
             if (ProjectHandler.getCurrentProject() != ProjectHandler.homeProject) {
                 
                 StorageHandler.saveProject(ProjectHandler.getCurrentProject());
