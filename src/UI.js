@@ -51,11 +51,10 @@ const UIHandler = () => {
             if (localStorage.length < 3) { 
                 project = ProjectHandler.createProject(tab.textContent, tab);
                 ProjectHandler.addProjectToArray(project);
-                console.log('here');
+               
             }
             else {
-                console.log('here2');
-                console.log(localStorage);
+                
                 project = ProjectHandler.createProject(StorageHandler.getSavedProject(tab.textContent).name, tab);
                 project.projectTasks = StorageHandler.getSavedProject(tab.textContent).projectTasks;
                 ProjectHandler.addProjectToArray(project);
@@ -69,7 +68,11 @@ const UIHandler = () => {
                   
                     
                     let setupTask = TaskHandler.createTask(project.projectTasks[i].title, project.projectTasks[i].details, project.projectTasks[i].priority, project.projectTasks[i].dueDate, project.projectTasks[i].parentProjectName);
+
+                    const isCheckedState = project.projectTasks[i].isChecked;
                     project.projectTasks[i] = setupTask;
+                    project.projectTasks[i].isChecked = isCheckedState;
+                    
                     if (project.name == 'Home') {
                         TaskHandler.addToAllTasks(project.projectTasks[i]);
                         
@@ -116,7 +119,11 @@ const UIHandler = () => {
                        
                         
                         let setupTask = TaskHandler.createTask(newProject.projectTasks[i].title, newProject.projectTasks[i].details, newProject.projectTasks[i].priority, newProject.projectTasks[i].dueDate, newProject.projectTasks[i].parentProjectName);
+
+
+                        const isCheckedState = newProject.projectTasks[i].isChecked;
                         newProject.projectTasks[i] = setupTask;
+                        newProject.projectTasks[i].isChecked = isCheckedState;
                        
                     }
                 }

@@ -16,7 +16,7 @@ export const createTask = (title, details, priority, dueDate, parentProjectName)
     const getExtendedDueDate = () => format(parseISO(obj.dueDate), 'MMMM do, yyyy');
     
     const toggleChecked = () => {
-        isChecked = !isChecked;
+        obj.isChecked = !obj.isChecked;
     }
     const updateTask = (newTitle, newDetails, newPriority, newDueDate) => {
         obj.title = newTitle;
